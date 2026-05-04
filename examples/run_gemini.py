@@ -30,7 +30,7 @@ Changelog:
       - Shared web_model for BrowserToolkit (browsing + planning)
       - max_tokens reduced 4096 -> 2048
       - ROUND_LIMIT = 5 -> 3 (max_steps confinement)
-      - GEMINI_2_0_FLASH -> GEMINI_2_0_FLASH_EXP (LITE has limit:0 on free tier)
+      - GEMINI_2_0_FLASH_EXP -> 'gemini-2.0-flash' (EXP=404, LITE=limit:0)
       - headless=True forced on BrowserToolkit
 """
 
@@ -89,7 +89,7 @@ def construct_agent_list() -> List[Dict[str, Any]]:
     # -----------------------------------------------------------------
     web_model = ModelFactory.create(
         model_platform=ModelPlatformType.GEMINI,
-        model_type=ModelType.GEMINI_2_0_FLASH_EXP,
+        model_type="gemini-2.0-flash",
         model_config_dict={"temperature": 0, "max_tokens": 2048},
     )
 
@@ -176,7 +176,7 @@ def construct_workforce() -> Workforce:
     # Single shared model for orchestrator layer
     orchestrator_model = ModelFactory.create(
         model_platform=ModelPlatformType.GEMINI,
-        model_type=ModelType.GEMINI_2_0_FLASH_EXP,
+        model_type="gemini-2.0-flash",
         model_config_dict={"temperature": 0, "max_tokens": 2048},
     )
 
