@@ -29,7 +29,8 @@ Changelog:
       - Reduced to 2 model instances (web_model + orchestrator_model)
       - Shared web_model for BrowserToolkit (browsing + planning)
       - max_tokens reduced 4096 -> 2048
-      - ROUND_LIMIT = 5 (exported for webapp.py)
+      - ROUND_LIMIT = 5 -> 3 (max_steps confinement)
+      - GEMINI_2_0_FLASH -> GEMINI_1_5_FLASH
       - headless=True forced on BrowserToolkit
 """
 
@@ -63,7 +64,7 @@ from typing import List, Dict, Any
 # decide whether to call run_society() or to invoke step() directly.
 # ---------------------------------------------------------------------------
 WORKFORCE_MODE = True
-ROUND_LIMIT = 5  # Exported: webapp.py reads this for RolePlaying modules
+ROUND_LIMIT = 3  # max_steps confinement (was 5, was 15 originally)
 
 base_dir = pathlib.Path(__file__).parent.parent
 env_path = base_dir / "owl" / ".env"
@@ -88,7 +89,7 @@ def construct_agent_list() -> List[Dict[str, Any]]:
     # -----------------------------------------------------------------
     web_model = ModelFactory.create(
         model_platform=ModelPlatformType.GEMINI,
-        model_type=ModelType.GEMINI_2_0_FLASH,
+        model_type=ModelType.GEMINI_1_5_FLASH,
         model_config_dict={"temperature": 0, "max_tokens": 2048},
     )
 
@@ -175,7 +176,7 @@ def construct_workforce() -> Workforce:
     # Single shared model for orchestrator layer
     orchestrator_model = ModelFactory.create(
         model_platform=ModelPlatformType.GEMINI,
-        model_type=ModelType.GEMINI_2_0_FLASH,
+        model_type=ModelType.GEMINI_1_5_FLASH,
         model_config_dict={"temperature": 0, "max_tokens": 2048},
     )
 

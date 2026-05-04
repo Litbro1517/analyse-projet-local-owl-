@@ -298,7 +298,9 @@ DEEPSEEK_API_KEY='Your_Key'
 # Tools & Services API
 #===========================================
 
-# Google Search API (https://coda.io/@jon-dallas/google-image-search-pack-example/search-engine-id-and-google-api-key-3)
+# Google Gemini API (https://aistudio.google.com/)
+# IMPORTANT: GEMINI_API_KEY and GOOGLE_API_KEY must share the same value.
+GEMINI_API_KEY='Your_Key'
 GOOGLE_API_KEY='Your_Key'
 SEARCH_ENGINE_ID='Your_ID'
 
@@ -461,8 +463,8 @@ def run_owl(question: str, example_module: str) -> Tuple[str, str, str]:
                         "❌ Error: run_society not available",
                     )
                 logging.info("Running society simulation...")
-                # Read ROUND_LIMIT from the module if available (default 5)
-                _round_limit = getattr(module, "ROUND_LIMIT", 5)
+                # Read ROUND_LIMIT from the module if available (default 3)
+                _round_limit = getattr(module, "ROUND_LIMIT", 3)
                 logging.info(f"Using round_limit={_round_limit}")
                 answer, chat_history, token_info = run_society(
                     society, round_limit=_round_limit
@@ -1221,7 +1223,7 @@ def create_ui():
                     with gr.Row():
                         refresh_logs_button2 = gr.Button("Refresh Record")
                         auto_refresh_checkbox2 = gr.Checkbox(
-                            label="Auto Refresh", value=True, interactive=True
+                            label="Auto Refresh", value=False, interactive=True
                         )
                         clear_logs_button2 = gr.Button(
                             "Clear Record", variant="secondary"
@@ -1331,10 +1333,11 @@ def create_ui():
 
         clear_logs_button2.click(fn=clear_log_file, outputs=[log_display2])
 
-        # Auto refresh control
+        # Auto refresh control -- DISABLED by default (v3)
+        # Prevents background polling that could trigger unintended API calls.
         def toggle_auto_refresh(enabled):
             if enabled:
-                return gr.update(every=3)
+                return gr.update(every=10)  # 10s interval (was 3s)
             else:
                 return gr.update(every=0)
 
