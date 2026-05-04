@@ -162,7 +162,7 @@ def get_model_config(model_name: str = "gemini") -> tuple:
     if model_name == "gemini":
         if not GEMINI_API_KEY:
             raise ValueError("缺少Gemini API密钥，请在.env文件中设置GEMINI_API_KEY")
-        return ModelPlatformType.GEMINI, ModelType.GEMINI_1_5_FLASH, {"api_key": GEMINI_API_KEY, "model": GEMINI_MODEL}
+        return ModelPlatformType.GEMINI, ModelType.GEMINI_2_0_FLASH_LITE, {"api_key": GEMINI_API_KEY, "model": GEMINI_MODEL}
     
     elif model_name == "openai":
         if not OPENAI_API_KEY:
